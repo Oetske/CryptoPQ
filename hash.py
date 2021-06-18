@@ -1,7 +1,4 @@
-import random
 import numpy as np
-import binascii
-from operator import add
 
 def key(n, m):
     q = n ** 2

@@ -33,7 +33,6 @@ class Block:
             result = hash_fct(bloc_format)
         elif hash_type == 'sha':
             result = hashlib.sha256(bloc_format.encode()).hexdigest()
-
         return result
 
 
@@ -86,7 +85,6 @@ class Blockchain:
         hash_new_block = self.proof_of_work(new_block, difficulty, hashtype)
         new_block.hash = hash_new_block
         self.add_block(new_block)
-
         self.unconfirmed_transactions.pop(0)
 
 
