@@ -26,7 +26,7 @@ class Block:
         self.nonce = nonce
         self.hash = 0
 
-    def hashing(self, hash_type='pq'):
+    def hashing(self, hash_type):
         bloc_format = "{}{}{}{}{}".format(self.index, self.transactions, self.timestamp, self.previous_hash,
                                           self.nonce)
         if hash_type == 'pq':
@@ -48,7 +48,7 @@ class Blockchain:
 
     def create_genesis(self):
         genesis_block = Block(0, [], time.time(), 0)
-        genesis_block.hash = genesis_block.hashing()
+        genesis_block.hash = genesis_block.hashing('pq')
         self.chain.append(genesis_block)
 
     def create_transaction(self, sender, receiver, amount, sk):
@@ -67,7 +67,7 @@ class Blockchain:
         hash_block = block.hashing(hashtype)
         while not hash_block[:difficulty] == difficulty * '0':
             block.nonce += 1
-            hash_block = block.hashing()
+            hash_block = block.hashing(hashtype)
         return hash_block
 
     def valid_block(self, current_block, previous_block):

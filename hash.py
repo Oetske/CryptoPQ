@@ -21,8 +21,8 @@ def hash_fct(msg):
     y = np.empty([m], dtype=int)
     for i in range(m):
         y[i] = ord(str_list[i])
-    k = key(64, m)
-    hash_int = fA(k, y, 64)
+    k = key(256, m)
+    hash_int = fA(k, y, 256)
     hash_list = hash_int.tolist()
     for i in range(len(hash_list)):
         hash_list[i] = sum(hash_list[i])

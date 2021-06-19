@@ -75,7 +75,7 @@ if Wallet.verification_ecdsa(wallet_bob_ecdsa.public_key, new_transaction_ecdsa.
     print('SHA256 time:', (end_sha - start_sha) * 10 ** -9, '\n')
 
 
-    print('Hahs SHA256: ', blockchain.chain[2].hash, 'Nonce: ', blockchain.chain[2].nonce, '\n')
+    print('Hash SHA256: ', blockchain.chain[2].hash, 'Nonce: ', blockchain.chain[2].nonce, '\n')
     wallet_alice_ecdsa.amount += new_transaction_ecdsa.amount
     wallet_alice_ecdsa.amount -= new_transaction_ecdsa.amount
 else:
@@ -104,7 +104,7 @@ def display_time_hash(start, end, type, difficulty):
     return t
 
 
-def test(type):
+def test_hash(type):
     test_time = []
     for i in range(4):
         new_transaction_test, valid_test = blockchain.create_transaction(wallet_alice.adress, wallet_bob.adress, 20,
@@ -136,21 +136,62 @@ def moyenne(a, iter=100):
     return r
 
 
+"""
 print(' -- Benchmark Ajtai && SHA256 -- \n')
 
 # -- Average time for Ajtai -- #
 total_pq = []
 for i in range(50):
-    total_pq.append(test('pq'))
+    total_pq.append(test_hash('pq'))
 
 print('Moyenne Ajtai', moyenne(total_pq, 50))
 
 # -- Average time for SHA256 -- #
 total_c = []
 for i in range(50):
-    total_c.append(test('sha'))
+    total_c.append(test_hash('sha'))
 
 print('Moyenne SHA', moyenne(total_c, 50))
+"""
+
+
+print(' -- Benchmark FALCON && ECDSA -- \n')
+
+def test_sig(type, n):
+    test_time = []
+    for i in range(n):
+        if type == 'pq':
+            start = time.process_time_ns()
+            Wallet_PQ(256, 'A')
+            end = time.process_time_ns()
+            pq_time = display_time_hash(start, end, 'FALCON', 0)
+            test_time.append(pq_time)
+        elif type == 'ecdsa':
+            start = time.process_time_ns()
+            Wallet('B')
+            end = time.process_time_ns()
+            c_time = display_time_hash(start, end, 'ECDSA', 0)
+            test_time.append(c_time)
+
+    return test_time
+
+
+n = 100
+"""
+total_falcon = test_sig('pq', n)
+s_falc = sum(total_falcon)
+moyenne_falc = s_falc / n
+print('Moyenne FALCON: ', moyenne_falc, '\n')
+
+
+total_ecdsa = test_sig('ecdsa', n)
+s_ecdsa = sum(total_ecdsa)
+moyenne_ecdsa = s_ecdsa / n
+print('Moyenne ECDSA: ', moyenne_ecdsa, '\n')
+"""
+
+
+
 
 
 
